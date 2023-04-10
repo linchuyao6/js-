@@ -10,21 +10,23 @@ int ping(int t) 在时间 t 添加一个新请求，其中 t 表示以毫秒为�
 保证 每次对 ping 的调用都使用比之前更大的 t 值。
 
 
-// * 思路：
+// * 思路：只要找到比0-3000小的数据，就利用队列把数据去除。
 
 
-var RecentCounter = function() {
 
-};
 
-/** 
+/**
  * @param {number} t
  * @return {number}
  */
-RecentCounter.prototype.ping = function(t) {};
-
-/**
- * Your RecentCounter object will be instantiated and called as such:
- * var obj = new RecentCounter()
- * var param_1 = obj.ping(t)
- */
+var RecentCounter = function() {
+  this.stack = []
+}
+RecentCounter.prototype.ping = function(t) {
+  let value = t - 3000
+  this.stack.push(t)
+  while (this.stack[0] < value) {
+    this.stack.shift()
+  }
+  return this.stack.length
+}
